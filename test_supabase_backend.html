@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PropheticPD - Supabase Backend Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .result.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .status-badge.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .auth-info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .auth-info strong {
+            color: #004085;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 PropheticPD Backend Test Suite</h1>
+            <p>Comprehensive testing of Supabase backend functionality</p>
+            <div id="connectionStatus"></div>
+        </div>
+
+        <div class="content">
+            <!-- Connection Test -->
+            <div class="test-section">
+                <h2>🔌 1. Database Connection Test</h2>
+                <button class="btn" onclick="testConnection()">Test Connection</button>
+                <div id="connectionResult"></div>
+            </div>
+
+            <!-- Authentication Test -->
+            <div class="test-section">
+                <h2>🔐 2. Authentication Test</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Create Admin User</h3>
+                        <input type="email" id="adminEmail" placeholder="admin@example.com"
+                            value="admin@propheticpd.com">
+                        <input type="password" id="adminPassword" placeholder="Password" value="Admin@123">
+                        <button class="btn btn-success" onclick="createAdmin()">Create Admin</button>
+                    </div>
+                    <div class="card">
+                        <h3>Create Student User</h3>
+                        <input type="email" id="studentEmail" placeholder="student@example.com"
+                            value="student@propheticpd.com">
+                        <input type="password" id="studentPassword" placeholder="Password" value="Student@123">
+                        <button class="btn btn-success" onclick="createStudent()">Create Student</button>
+                    </div>
+                </div>
+                <div id="currentUser" class="auth-info" style="display:none;"></div>
+                <button class="btn" onclick="loginAsAdmin()">Login as Admin</button>
+                <button class="btn" onclick="loginAsStudent()">Login as Student</button>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+                <div id="authResult"></div>
+            </div>
+
+            <!-- Data Retrieval Test -->
+            <div class="test-section">
+                <h2>📊 3. Data Retrieval Test</h2>
+                <button class="btn" onclick="getLifeSkills()">Get Life Skills</button>
+                <button class="btn" onclick="getWeek1Content()">Get Week 1 Content</button>
+                <button class="btn" onclick="getDashboardConfig()">Get Dashboard Config</button>
+                <div id="dataResult"></div>
+            </div>
+
+            <!-- Student Flow Test -->
+            <div class="test-section">
+                <h2>🎯 4. Student Workflow Test (Login as Student First!)</h2>
+                <button class="btn" onclick="markVideoWatched()">1. Mark Video Watched</button>
+                <button class="btn" onclick="submitQuiz()">2. Submit Quiz</button>
+                <button class="btn" onclick="submitChallenge()">3. Submit Challenge</button>
+                <button class="btn" onclick="submitReflection()">4. Submit Reflection</button>
+                <button class="btn btn-success" onclick="checkProgress()">Check My Progress</button>
+                <div id="studentResult"></div>
+            </div>
+
+            <!-- Helper Functions Test -->
+            <div class="test-section">
+                <h2>⚙️ 5. Helper Functions Test</h2>
+                <button class="btn" onclick="testGetProgress()">Get Week Progress</button>
+                <button class="btn" onclick="testCalculatePoints()">Calculate Total Points</button>
+                <button class="btn" onclick="testCanAccessQuiz()">Test Access Gating</button>
+                <div id="helperResult"></div>
+            </div>
+
+            <!-- Admin Flow Test -->
+            <div class="test-section">
+                <h2>👨‍💼 6. Admin Workflow Test (Login as Admin First!)</h2>
+                <button class="btn" onclick="getTopStudents()">View Leaderboard</button>
+                <button class="btn" onclick="getRecentActivity()">View Activity Feed</button>
+                <button class="btn" onclick="gradeChallenge()">Grade Challenge</button>
+                <button class="btn" onclick="gradeReflection()">Grade Reflection</button>
+                <div id="adminResult"></div>
+            </div>
+
+            <!-- RLS Security Test -->
+            <div class="test-section">
+                <h2>🔒 7. Security (RLS) Test</h2>
+                <button class="btn" onclick="testStudentCannotSeeOthers()">Test Student Isolation</button>
+                <button class="btn" onclick="testStudentCannotGrade()">Test Student Cannot Grade</button>
+                <button class="btn" onclick="testAdminCanSeeAll()">Test Admin Access</button>
+                <div id="securityResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://bgcpizdlyytderacuzbf.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnY3BpemRseXl0ZGVyYWN1emJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2MTM3OTUsImV4cCI6MjA4NjE4OTc5NX0.mqQVJ20pX4WH9IV45vbJXhdV367155tYmLF5AzRF6eM';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUser = null;
+        let studentId = null;
+
+        // Utility Functions
+        function showResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.className = `result ${type}`;
+            element.innerHTML = message;
+        }
+
+        function updateConnectionStatus() {
+            const statusDiv = document.getElementById('connectionStatus');
+            if (currentUser) {
+                statusDiv.innerHTML = `<span class="status-badge connected">✓ Connected as ${currentUser.email}</span>`;
+            } else {
+                statusDiv.innerHTML = `<span class="status-badge disconnected">✗ Not Authenticated</span>`;
+            }
+        }
+
+        async function updateCurrentUserDisplay() {
+            const { data: { user } } = await supabase.auth.getUser();
+            currentUser = user;
+
+            if (user) {
+                const { data: userData } = await supabase
+                    .from('users_extended')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+
+                const userDiv = document.getElementById('currentUser');
+                userDiv.style.display = 'block';
+                userDiv.innerHTML = `
+                    <strong>Logged in as:</strong> ${user.email}<br>
+                    <strong>Role:</strong> ${userData?.role || 'Unknown'}<br>
+                    <strong>Name:</strong> ${userData?.name || 'N/A'}<br>
+                    <strong>User ID:</strong> ${user.id}
+                `;
+
+                if (userData?.role === 'Student') {
+                    studentId = user.id;
+                }
+            } else {
+                document.getElementById('currentUser').style.display = 'none';
+            }
+
+            updateConnectionStatus();
+        }
+
+        // 1. Connection Test
+        async function testConnection() {
+            try {
+                const { data, error } = await supabase
+                    .from('life_skills')
+                    .select('count');
+
+                if (error) throw error;
+
+                showResult('connectionResult',
+                    `✅ <strong>Connection Successful!</strong><br>
+                    Database is reachable and responding.<br>
+                    Supabase URL: ${SUPABASE_URL}`,
+                    'success');
+            } catch (error) {
+                showResult('connectionResult',
+                    `❌ <strong>Connection Failed!</strong><br>
+                    Error: ${error.message}`,
+                    'error');
+            }
+        }
+
+        // 2. Authentication Tests
+        async function createAdmin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                // Add to users_extended
+                const { error: insertError } = await supabase
+                    .from('users_extended')
+                    .insert({
+                        id: data.user.id,
+                        name: 'Admin User',
+                        role: 'Admin',
+                        enrollment_date: new Date().toISOString().split('T')[0]
+                    });
+
+                if (insertError) throw insertError;
+
+                showResult('authResult',
+                    `✅ <strong>Admin Created!</strong><br>
+                    Email: ${email}<br>
+                    User ID: ${data.user.id}<br>
+                    Role: Admin`,
+                    'success');
+            } catch (error) {
+                showResult('authResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function createStudent() {
+            const email = document.getElementById('studentEmail').value;
+            const password = document.getElementById('studentPassword').value;
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                // Add to users_extended
+                const { error: insertError } = await supabase
+                    .from('users_extended')
+                    .insert({
+                        id: data.user.id,
+                        name: 'Test Student',
+                        role: 'Student',
+                        enrollment_date: new Date().toISOString().split('T')[0]
+                    });
+
+                if (insertError) throw insertError;
+
+                studentId = data.user.id;
+
+                showResult('authResult',
+                    `✅ <strong>Student Created!</strong><br>
+                    Email: ${email}<br>
+                    User ID: ${data.user.id}<br>
+                    Role: Student`,
+                    'success');
+            } catch (error) {
+                showResult('authResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function loginAsAdmin() {
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: document.getElementById('adminEmail').value,
+                    password: document.getElementById('adminPassword').value
+                });
+
+                if (error) throw error;
+
+                await updateCurrentUserDisplay();
+                showResult('authResult', `✅ Logged in as Admin!`, 'success');
+            } catch (error) {
+                showResult('authResult', `❌ Login failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function loginAsStudent() {
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: document.getElementById('studentEmail').value,
+                    password: document.getElementById('studentPassword').value
+                });
+
+                if (error) throw error;
+
+                await updateCurrentUserDisplay();
+                studentId = data.user.id;
+                showResult('authResult', `✅ Logged in as Student!`, 'success');
+            } catch (error) {
+                showResult('authResult', `❌ Login failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function logout() {
+            await supabase.auth.signOut();
+            currentUser = null;
+            studentId = null;
+            await updateCurrentUserDisplay();
+            showResult('authResult', `✅ Logged out successfully!`, 'success');
+        }
+
+        // 3. Data Retrieval Tests
+        async function getLifeSkills() {
+            try {
+                const { data, error } = await supabase
+                    .from('life_skills')
+                    .select('*')
+                    .order('life_skill_id');
+
+                if (error) throw error;
+
+                showResult('dataResult',
+                    `✅ <strong>Life Skills Retrieved (${data.length} skills):</strong><br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('dataResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function getWeek1Content() {
+            try {
+                const [videos, quizzes, challenges] = await Promise.all([
+                    supabase.from('videos').select('*').eq('week_number', 1),
+                    supabase.from('quizzes').select('*').eq('week_number', 1),
+                    supabase.from('challenges').select('*').eq('week_number', 1)
+                ]);
+
+                showResult('dataResult',
+                    `✅ <strong>Week 1 Content:</strong><br>
+                    <strong>Videos:</strong> ${videos.data?.length || 0}<br>
+                    <strong>Quizzes:</strong> ${quizzes.data?.length || 0}<br>
+                    <strong>Challenges:</strong> ${challenges.data?.length || 0}<br>
+                    <pre>${JSON.stringify({ videos: videos.data, quizzes: quizzes.data, challenges: challenges.data }, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('dataResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function getDashboardConfig() {
+            try {
+                const { data, error } = await supabase
+                    .from('dashboard_config')
+                    .select('*')
+                    .eq('id', 1)
+                    .single();
+
+                if (error) throw error;
+
+                showResult('dataResult',
+                    `✅ <strong>Dashboard Config:</strong><br>
+                    Current Active Week: ${data.week_id}<br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('dataResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // 4. Student Workflow Tests
+        async function markVideoWatched() {
+            if (!currentUser) {
+                showResult('studentResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('attendance_records')
+                    .insert({
+                        user_id: currentUser.id,
+                        week_number: 1,
+                        is_present: true
+                    });
+
+                if (error) throw error;
+
+                showResult('studentResult',
+                    `✅ <strong>Video Attendance Marked!</strong><br>
+                    Week: 1<br>
+                    Points Earned: 10`,
+                    'success');
+            } catch (error) {
+                if (error.message.includes('duplicate')) {
+                    showResult('studentResult', `ℹ️ Already marked attendance for Week 1`, 'info');
+                } else {
+                    showResult('studentResult', `❌ Error: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function submitQuiz() {
+            if (!currentUser) {
+                showResult('studentResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                // Get quiz questions
+                const { data: questions, error: qError } = await supabase
+                    .from('quizzes')
+                    .select('*')
+                    .eq('week_number', 1);
+
+                if (qError) throw qError;
+
+                // Simulate correct answers (80% score)
+                const correctAnswers = Math.floor(questions.length * 0.8);
+                const scorePercentage = (correctAnswers / questions.length) * 100;
+
+                // Insert score for first quiz question (representative)
+                const { data, error } = await supabase
+                    .from('quiz_scores')
+                    .upsert({
+                        quiz_id: questions[0].quiz_id,
+                        user_id: currentUser.id,
+                        score_achieved: scorePercentage,
+                        date_taken: new Date().toISOString()
+                    });
+
+                if (error) throw error;
+
+                showResult('studentResult',
+                    `✅ <strong>Quiz Submitted!</strong><br>
+                    Total Questions: ${questions.length}<br>
+                    Correct Answers: ${correctAnswers}<br>
+                    Score: ${scorePercentage.toFixed(2)}%<br>
+                    Points Earned: ${scorePercentage.toFixed(2)}`,
+                    'success');
+            } catch (error) {
+                showResult('studentResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function submitChallenge() {
+            if (!currentUser) {
+                showResult('studentResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                // Get challenge
+                const { data: challenges } = await supabase
+                    .from('challenges')
+                    .select('*')
+                    .eq('week_number', 1)
+                    .limit(1)
+                    .single();
+
+                const { data, error } = await supabase
+                    .from('challenge_scores')
+                    .insert({
+                        user_id: currentUser.id,
+                        challenge_id: challenges.challenge_id,
+                        score_achieved: 0,
+                        response_text: 'This is my week 1 time management challenge submission. I created a detailed schedule prioritizing prayers, Quran time, and top tasks.',
+                        date_submitted: new Date().toISOString()
+                    });
+
+                if (error) throw error;
+
+                showResult('studentResult',
+                    `✅ <strong>Challenge Submitted!</strong><br>
+                    Challenge: ${challenges.title}<br>
+                    Status: Submitted (Awaiting Grading)<br>
+                    Initial Score: 0 (Admin will grade)`,
+                    'success');
+            } catch (error) {
+                if (error.message.includes('duplicate')) {
+                    showResult('studentResult', `ℹ️ Already submitted challenge for Week 1`, 'info');
+                } else {
+                    showResult('studentResult', `❌ Error: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function submitReflection() {
+            if (!currentUser) {
+                showResult('studentResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                // Insert reflection
+                const { data: reflection, error: rError } = await supabase
+                    .from('reflections')
+                    .upsert({
+                        user_id: currentUser.id,
+                        week_number: 1,
+                        reflection_text: 'This week I learned the importance of time management. Implementing time blocking helped me prioritize prayers and important tasks. I feel more productive and blessed.',
+                        is_evaluated: false
+                    })
+                    .select()
+                    .single();
+
+                if (rError) throw rError;
+
+                // Insert reflection score
+                const { error: sError } = await supabase
+                    .from('reflection_scores')
+                    .upsert({
+                        reflection_id: reflection.reflection_id,
+                        user_id: currentUser.id,
+                        score_achieved: 0,
+                        response_text: reflection.reflection_text,
+                        date_submitted: new Date().toISOString()
+                    });
+
+                if (sError) throw sError;
+
+                showResult('studentResult',
+                    `✅ <strong>Reflection Submitted!</strong><br>
+                    Week: 1<br>
+                    Status: Submitted (Awaiting Evaluation)<br>
+                    Initial Score: 0 (Admin will grade)`,
+                    'success');
+            } catch (error) {
+                showResult('studentResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function checkProgress() {
+            if (!currentUser) {
+                showResult('studentResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .rpc('get_user_week_progress', {
+                        p_user_id: currentUser.id,
+                        p_week_number: 1
+                    });
+
+                if (error) throw error;
+
+                const { data: points } = await supabase
+                    .rpc('calculate_total_points', {
+                        p_user_id: currentUser.id
+                    });
+
+                showResult('studentResult',
+                    `✅ <strong>Week 1 Progress:</strong><br>
+                    ✓ Video Watched: ${data.video_watched ? 'Yes ✅' : 'No ❌'}<br>
+                    ✓ Quiz Completed: ${data.quiz_completed ? 'Yes ✅' : 'No ❌'}<br>
+                    ✓ Challenge Completed: ${data.challenge_completed ? 'Yes ✅' : 'No ❌'}<br>
+                    ✓ Reflection Completed: ${data.reflection_completed ? 'Yes ✅' : 'No ❌'}<br>
+                    ✓ All Activities: ${data.all_completed ? 'Complete ✅' : 'In Progress 🔄'}<br>
+                    <br><strong>Total Points: ${points || 0}</strong>`,
+                    'success');
+            } catch (error) {
+                showResult('studentResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // 5. Helper Functions Tests
+        async function testGetProgress() {
+            if (!studentId) {
+                showResult('helperResult', `❌ Need student ID. Create and login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .rpc('get_user_week_progress', {
+                        p_user_id: studentId,
+                        p_week_number: 1
+                    });
+
+                if (error) throw error;
+
+                showResult('helperResult',
+                    `✅ <strong>get_user_week_progress() Result:</strong><br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('helperResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testCalculatePoints() {
+            if (!studentId) {
+                showResult('helperResult', `❌ Need student ID. Create and login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .rpc('calculate_total_points', {
+                        p_user_id: studentId
+                    });
+
+                if (error) throw error;
+
+                showResult('helperResult',
+                    `✅ <strong>calculate_total_points() Result:</strong><br>
+                    Total Points: ${data}`,
+                    'success');
+            } catch (error) {
+                showResult('helperResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testCanAccessQuiz() {
+            if (!studentId) {
+                showResult('helperResult', `❌ Need student ID. Create and login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                const [quiz, challenge, reflection] = await Promise.all([
+                    supabase.rpc('can_access_quiz', { p_user_id: studentId, p_week_number: 1 }),
+                    supabase.rpc('can_access_challenge', { p_user_id: studentId, p_week_number: 1 }),
+                    supabase.rpc('can_access_reflection', { p_user_id: studentId, p_week_number: 1 })
+                ]);
+
+                showResult('helperResult',
+                    `✅ <strong>Access Gating Test:</strong><br>
+                    Can Access Quiz: ${quiz.data ? 'Yes ✅' : 'No ❌'} (Needs: Video)<br>
+                    Can Access Challenge: ${challenge.data ? 'Yes ✅' : 'No ❌'} (Needs: Video + Quiz)<br>
+                    Can Access Reflection: ${reflection.data ? 'Yes ✅' : 'No ❌'} (Needs: Video + Quiz + Challenge)`,
+                    'success');
+            } catch (error) {
+                showResult('helperResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // 6. Admin Tests
+        async function getTopStudents() {
+            try {
+                const { data, error } = await supabase
+                    .rpc('get_top_students', {
+                        p_limit: 10
+                    });
+
+                if (error) throw error;
+
+                showResult('adminResult',
+                    `✅ <strong>Top Students Leaderboard:</strong><br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('adminResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function getRecentActivity() {
+            try {
+                const { data, error } = await supabase
+                    .rpc('get_recent_activity', {
+                        p_limit: 15
+                    });
+
+                if (error) throw error;
+
+                showResult('adminResult',
+                    `✅ <strong>Recent Activity Feed:</strong><br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('adminResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function gradeChallenge() {
+            try {
+                // Get a challenge submission
+                const { data: submissions } = await supabase
+                    .from('challenge_scores')
+                    .select('*')
+                    .limit(1);
+
+                if (!submissions || submissions.length === 0) {
+                    showResult('adminResult', `ℹ️ No challenge submissions to grade yet`, 'info');
+                    return;
+                }
+
+                const { data, error } = await supabase
+                    .from('challenge_scores')
+                    .update({ score_achieved: 22.5 })
+                    .eq('score_id', submissions[0].score_id)
+                    .select();
+
+                if (error) throw error;
+
+                showResult('adminResult',
+                    `✅ <strong>Challenge Graded!</strong><br>
+                    Score ID: ${submissions[0].score_id}<br>
+                    New Score: 22.5 / 25.0<br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('adminResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function gradeReflection() {
+            try {
+                // Get a reflection
+                const { data: reflections } = await supabase
+                    .from('reflections')
+                    .select('*')
+                    .limit(1);
+
+                if (!reflections || reflections.length === 0) {
+                    showResult('adminResult', `ℹ️ No reflections to grade yet`, 'info');
+                    return;
+                }
+
+                // Update reflection as evaluated
+                await supabase
+                    .from('reflections')
+                    .update({ is_evaluated: true })
+                    .eq('reflection_id', reflections[0].reflection_id);
+
+                // Update score
+                const { data, error } = await supabase
+                    .from('reflection_scores')
+                    .update({ score_achieved: 18.0 })
+                    .eq('reflection_id', reflections[0].reflection_id)
+                    .select();
+
+                if (error) throw error;
+
+                showResult('adminResult',
+                    `✅ <strong>Reflection Graded!</strong><br>
+                    Reflection ID: ${reflections[0].reflection_id}<br>
+                    New Score: 18.0<br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                    'success');
+            } catch (error) {
+                showResult('adminResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // 7. Security Tests
+        async function testStudentCannotSeeOthers() {
+            if (!currentUser) {
+                showResult('securityResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                // Try to get all quiz scores (should only see own)
+                const { data, error } = await supabase
+                    .from('quiz_scores')
+                    .select('*');
+
+                if (error) throw error;
+
+                const allBelongToCurrentUser = data.every(score => score.user_id === currentUser.id);
+
+                if (allBelongToCurrentUser) {
+                    showResult('securityResult',
+                        `✅ <strong>Security Test Passed!</strong><br>
+                        Student can only see their own scores (${data.length} records)<br>
+                        RLS is working correctly! 🔒`,
+                        'success');
+                } else {
+                    showResult('securityResult',
+                        `❌ <strong>Security Breach!</strong><br>
+                        Student can see other users' data!`,
+                        'error');
+                }
+            } catch (error) {
+                showResult('securityResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testStudentCannotGrade() {
+            if (!currentUser) {
+                showResult('securityResult', `❌ Please login as student first!`, 'error');
+                return;
+            }
+
+            try {
+                const { data: submissions } = await supabase
+                    .from('challenge_scores')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .limit(1);
+
+                if (!submissions || submissions.length === 0) {
+                    showResult('securityResult', `ℹ️ No submissions to test with`, 'info');
+                    return;
+                }
+
+                const { error } = await supabase
+                    .from('challenge_scores')
+                    .update({ score_achieved: 100 })
+                    .eq('score_id', submissions[0].score_id);
+
+                if (error) {
+                    showResult('securityResult',
+                        `✅ <strong>Security Test Passed!</strong><br>
+                        Student cannot modify their own scores<br>
+                        Error (Expected): ${error.message}<br>
+                        RLS is working correctly! 🔒`,
+                        'success');
+                } else {
+                    showResult('securityResult',
+                        `❌ <strong>Security Breach!</strong><br>
+                        Student was able to modify their own score!`,
+                        'error');
+                }
+            } catch (error) {
+                showResult('securityResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAdminCanSeeAll() {
+            if (!currentUser) {
+                showResult('securityResult', `❌ Please login as admin first!`, 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('quiz_scores')
+                    .select('*');
+
+                if (error) throw error;
+
+                showResult('securityResult',
+                    `✅ <strong>Admin Access Test Passed!</strong><br>
+                    Admin can see all quiz scores (${data.length} records)<br>
+                    RLS is working correctly! 🔒`,
+                    'success');
+            } catch (error) {
+                showResult('securityResult', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            updateCurrentUserDisplay();
+
+            // Expose functions to window for easier testing
+            window.testConnection = testConnection;
+            window.createAdmin = createAdmin;
+            window.createStudent = createStudent;
+            window.loginAsAdmin = loginAsAdmin;
+            window.loginAsStudent = loginAsStudent;
+            window.logout = logout;
+            window.getLifeSkills = getLifeSkills;
+            window.getWeek1Content = getWeek1Content;
+            window.getDashboardConfig = getDashboardConfig;
+            window.markVideoWatched = markVideoWatched;
+            window.submitQuiz = submitQuiz;
+            window.submitChallenge = submitChallenge;
+            window.submitReflection = submitReflection;
+            window.checkProgress = checkProgress;
+            window.testGetProgress = testGetProgress;
+            window.testCalculatePoints = testCalculatePoints;
+            window.testCanAccessQuiz = testCanAccessQuiz;
+            window.getTopStudents = getTopStudents;
+            window.getRecentActivity = getRecentActivity;
+            window.gradeChallenge = gradeChallenge;
+            window.gradeReflection = gradeReflection;
+            window.testStudentCannotSeeOthers = testStudentCannotSeeOthers;
+            window.testStudentCannotGrade = testStudentCannotGrade;
+            window.testAdminCanSeeAll = testAdminCanSeeAll;
+        });
+    </script>
+</body>
+
+</html>

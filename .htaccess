@@ -1,0 +1,58 @@
+# PropheticPD - Main .htaccess Configuration
+
+DirectoryIndex index.php
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Redirect old admin files to Admin directory
+    RewriteRule ^admin-dashboard\.php$ Admin/admin-dashboard.php [L,R=301]
+    RewriteRule ^admin-crud\.php$ Admin/admin-crud.php [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<FilesMatch "\.(sql|bak|backup|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^\.env">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_php7.c>
+    php_flag display_errors Off
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_flag display_errors Off
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+</IfModule>
+
+ServerSignature Off
+AddDefaultCharset UTF-8

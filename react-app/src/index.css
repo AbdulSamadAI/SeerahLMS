@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core Palette: Prophetic Mastery v2.0 */
+  --primary: #7C3AED;
+  --primary-hover: #6D28D9;
+  --primary-soft: #EDE9FE;
+
+  --accent: #F59E0B;
+  --accent-soft: #FEF3C7;
+
+  --success: #10B981;
+  --success-soft: #D1FAE5;
+
+  --background: #F8FAFC;
+  --surface: #FFFFFF;
+
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+  --text-inverse: #FFFFFF;
+
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Instrument Serif', serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+@layer components {
+
+  /* Premium Containers */
+  .card {
+    @apply bg-white rounded-[32px] border-none shadow-premium transition-all duration-300 overflow-hidden;
+  }
+
+  .card-hover {
+    @apply hover:shadow-[0_25px_50px_-12px_rgb(0_0_0_/_0.08)] hover:-translate-y-1;
+  }
+
+  /* Glassmorphism */
+  .glass {
+    @apply backdrop-blur-md bg-white/80 border border-white/20;
+  }
+
+  /* Premium Inputs */
+  .input {
+    @apply w-full px-6 py-4 bg-slate-100 border-2 border-transparent rounded-2xl text-slate-900 font-medium transition-all outline-none focus:bg-white focus:border-primary-500/20 focus:ring-4 focus:ring-primary-500/10 placeholder:text-slate-400;
+  }
+
+  /* Premium Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white shadow-xl shadow-primary-500/20 hover:bg-primary-700 hover:shadow-2xl hover:shadow-primary-500/30 hover:-translate-y-0.5;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white shadow-xl shadow-accent/20 hover:bg-amber-600 hover:shadow-2xl hover:shadow-accent/30 hover:-translate-y-0.5;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-slate-600 hover:bg-slate-100;
+  }
+
+  /* Metadata Badge */
+  .badge {
+    @apply px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300;
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
