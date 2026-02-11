@@ -37,7 +37,7 @@ export const PieChart: React.FC<PieChartProps> = ({ data, size = 200 }) => {
     };
 
     return (
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-6 sm:gap-8">
             <svg width={size} height={size}>
                 {data.map((slice, index) => {
                     const percentage = (slice.value / total) * 100;

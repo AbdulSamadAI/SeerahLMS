@@ -123,8 +123,10 @@ export const QuizTaker: React.FC = () => {
 
             return { score, isPassed, correctCount, attemptId: attempt.id };
         },
-        onSuccess: (data, variables, context) => {
-            navigate(`/quiz/${id}/result`, { state: { ...data, attemptId: data.attemptId } });
+        onSuccess: (data) => {
+            if (data) {
+                navigate(`/quiz/${id}/result`, { state: { ...data, attemptId: data.attemptId } });
+            }
         }
     });
 
@@ -149,32 +151,36 @@ export const QuizTaker: React.FC = () => {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
             {/* Header / HUD */}
-            <header className="bg-white border-b border-slate-100 p-6 sticky top-0 z-50">
-                <div className="max-w-5xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-primary-50 rounded-2xl flex items-center justify-center">
-                            <Brain className="w-6 h-6 text-primary-600" />
+            <header className="bg-white border-b border-slate-100 p-4 md:p-6 sticky top-0 z-50">
+                <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3 md:gap-4">
+                        <div className="w-10 h-10 md:w-12 md:h-12 bg-primary-50 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0">
+                            <Brain className="w-5 h-5 md:w-6 md:h-6 text-primary-600" />
                         </div>
-                        <div>
-                            <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">{quiz.title}</h2>
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Assessment in Progress</span>
+                        <div className="min-w-0">
+                            <h2 className="text-sm md:text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1 truncate">{quiz.title}</h2>
+                            <span className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Assessment</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-8">
-                        <div className="flex flex-col items-end">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Time Remaining</span>
+                    <div className="flex items-center gap-4 md:gap-8 shrink-0">
+                        <div className="hidden sm:flex flex-col items-end">
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Time Left</span>
                             <div className={`flex items-center gap-2 text-xl font-black ${(timeLeft || 0) < 60 ? 'text-red-500 animate-pulse' : 'text-slate-900'}`}>
                                 <Timer className="w-5 h-5" />
                                 {formatTime(timeLeft || 0)}
                             </div>
                         </div>
+                        <div className="sm:hidden flex items-center gap-1.5 text-xs font-black font-mono bg-slate-50 px-2 py-1 rounded-lg">
+                            <Timer className={`w-3.5 h-3.5 ${(timeLeft || 0) < 60 ? 'text-red-500' : 'text-slate-400'}`} />
+                            <span className={(timeLeft || 0) < 60 ? 'text-red-500' : 'text-slate-600'}>{formatTime(timeLeft || 0)}</span>
+                        </div>
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className="btn btn-primary px-8 py-3 rounded-2xl shadow-xl shadow-primary-500/20 uppercase tracking-widest font-black text-xs"
+                            className="bg-primary-600 text-white px-4 md:px-8 py-2 md:py-3 rounded-xl md:rounded-2xl shadow-lg shadow-primary-500/20 uppercase tracking-widest font-black text-[9px] md:text-xs hover:bg-primary-700 transition-colors"
                         >
-                            Final Submission
+                            Submit
                         </button>
                     </div>
                 </div>
@@ -189,23 +195,23 @@ export const QuizTaker: React.FC = () => {
                 </div>
             </header>
 
-            <main className="flex-1 max-w-4xl mx-auto w-full p-8 md:p-12 pb-32">
+            <main className="flex-1 max-w-4xl mx-auto w-full p-6 md:p-12 pb-32">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentQuestionIdx}
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
-                        className="space-y-12"
+                        className="space-y-8 md:space-y-12"
                     >
-                        <div className="space-y-6">
-                            <span className="text-[12px] font-black text-primary-600 uppercase tracking-[0.3em]">Query {currentQuestionIdx + 1} of {quiz.questions.length}</span>
-                            <h1 className="text-3xl font-black text-slate-900 tracking-tight leading-tight">
+                        <div className="space-y-4 md:space-y-6">
+                            <span className="text-[11px] md:text-[12px] font-black text-primary-600 uppercase tracking-[0.3em]">Query {currentQuestionIdx + 1} of {quiz.questions.length}</span>
+                            <h1 className="text-xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
                                 {currentQuestion.question_text}
                             </h1>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-6">
+                        <div className="grid grid-cols-1 gap-4 md:gap-6">
                             {['A', 'B', 'C', 'D'].map((opt) => {
                                 const optKey = `option_${opt.toLowerCase()}`;
                                 const text = currentQuestion[optKey];
@@ -217,25 +223,25 @@ export const QuizTaker: React.FC = () => {
                                     <button
                                         key={opt}
                                         onClick={() => handleAnswer(currentQuestion.id, opt)}
-                                        className={`group relative p-8 rounded-[32px] border-2 text-left transition-all duration-300 ${isSelected
+                                        className={`group relative p-5 md:p-8 rounded-[24px] md:rounded-[32px] border-2 text-left transition-all duration-300 ${isSelected
                                             ? 'bg-primary-50 border-primary-500 shadow-xl shadow-primary-500/10'
                                             : 'bg-white border-slate-100 hover:border-primary-200'
                                             }`}
                                     >
-                                        <div className="flex items-center gap-6">
-                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg transition-all ${isSelected ? 'bg-primary-600 text-white shadow-lg' : 'bg-slate-50 text-slate-400 group-hover:bg-primary-50 group-hover:text-primary-600'
+                                        <div className="flex items-center gap-4 md:gap-6">
+                                            <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex-shrink-0 flex items-center justify-center font-black text-base md:text-lg transition-all ${isSelected ? 'bg-primary-600 text-white shadow-lg' : 'bg-slate-50 text-slate-400 group-hover:bg-primary-50 group-hover:text-primary-600'
                                                 }`}>
                                                 {opt}
                                             </div>
-                                            <span className={`text-lg font-bold ${isSelected ? 'text-primary-900' : 'text-slate-700'}`}>
+                                            <span className={`text-base md:text-lg font-bold flex-1 ${isSelected ? 'text-primary-900' : 'text-slate-700'}`}>
                                                 {text}
                                             </span>
                                             {isSelected && (
                                                 <motion.div
                                                     initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                                    className="ml-auto w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white"
+                                                    className="w-6 h-6 md:w-8 md:h-8 bg-primary-600 rounded-full flex items-center justify-center text-white shrink-0"
                                                 >
-                                                    <Check className="w-5 h-5" />
+                                                    <Check className="w-4 h-4 md:w-5 h-5" />
                                                 </motion.div>
                                             )}
                                         </div>
@@ -262,10 +268,10 @@ export const QuizTaker: React.FC = () => {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white rounded-[40px] shadow-2xl max-w-md w-full p-8 text-center"
+                            className="bg-white rounded-[32px] md:rounded-[40px] shadow-2xl max-w-md w-full p-6 md:p-8 text-center"
                         >
-                            <div className="w-20 h-20 bg-primary-50 text-primary-600 rounded-[32px] flex items-center justify-center mx-auto mb-6">
-                                <Brain className="w-10 h-10" />
+                            <div className="w-16 h-16 md:w-20 md:h-20 bg-primary-50 text-primary-600 rounded-[24px] md:rounded-[32px] flex items-center justify-center mx-auto mb-6">
+                                <Brain className="w-8 h-8 md:w-10 md:h-10" />
                             </div>
                             <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Submit Assessment?</h3>
                             <p className="text-slate-500 mb-8 font-medium">
@@ -292,23 +298,23 @@ export const QuizTaker: React.FC = () => {
             </AnimatePresence>
 
             {/* Navigation Controls */}
-            <footer className="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-xl border-t border-slate-100 p-8">
-                <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <footer className="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-xl border-t border-slate-100 p-4 md:p-8">
+                <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
                     <button
                         onClick={() => setCurrentQuestionIdx(prev => Math.max(0, prev - 1))}
                         disabled={currentQuestionIdx === 0}
-                        className={`flex items-center gap-3 font-black uppercase tracking-widest text-xs transition-all ${currentQuestionIdx === 0 ? 'text-slate-200 cursor-not-allowed' : 'text-slate-500 hover:text-slate-900 hover:-translate-x-2'}`}
+                        className={`flex items-center gap-2 md:gap-3 font-black uppercase tracking-widest text-[9px] md:text-xs transition-all ${currentQuestionIdx === 0 ? 'text-slate-200 cursor-not-allowed' : 'text-slate-500 hover:text-slate-900 hover:-translate-x-1'}`}
                     >
-                        <ArrowLeft className="w-4 h-4" /> Previous Query
+                        <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" /> Previous
                     </button>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 md:gap-2 overflow-hidden">
                         {quiz.questions.map((_: any, idx: number) => (
                             <div
                                 key={idx}
-                                className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${idx === currentQuestionIdx
-                                    ? 'w-8 bg-primary-600'
-                                    : answers[quiz.questions[idx].id] ? 'bg-primary-300' : 'bg-slate-200'
+                                className={`h-1 md:h-1.5 rounded-full transition-all duration-500 shrink-0 ${idx === currentQuestionIdx
+                                    ? 'w-4 md:w-8 bg-primary-600'
+                                    : answers[quiz.questions[idx].id] ? 'w-1 md:w-1.5 bg-primary-300' : 'w-1 md:w-1.5 bg-slate-200'
                                     }`}
                             />
                         ))}
@@ -317,9 +323,9 @@ export const QuizTaker: React.FC = () => {
                     <button
                         onClick={() => setCurrentQuestionIdx(prev => Math.min(quiz.questions.length - 1, prev + 1))}
                         disabled={currentQuestionIdx === quiz.questions.length - 1}
-                        className={`flex items-center gap-3 font-black uppercase tracking-widest text-xs transition-all ${currentQuestionIdx === quiz.questions.length - 1 ? 'text-slate-200 cursor-not-allowed' : 'text-primary-600 hover:text-primary-700 hover:translate-x-2'}`}
+                        className={`flex items-center gap-2 md:gap-3 font-black uppercase tracking-widest text-[9px] md:text-xs transition-all ${currentQuestionIdx === quiz.questions.length - 1 ? 'text-slate-200 cursor-not-allowed' : 'text-primary-600 hover:text-primary-700 hover:translate-x-1'}`}
                     >
-                        Next Query <ArrowRight className="w-4 h-4" />
+                        Next <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </button>
                 </div>
             </footer>

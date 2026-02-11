@@ -218,21 +218,21 @@ export const VideoLibrary: React.FC = () => {
     }
 
     return (
-        <div className="max-w-6xl mx-auto px-6 py-8">
-            <div className="flex items-center gap-4 mb-8">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
+            <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
                 <button
                     onClick={() => navigate(-1)}
-                    className="p-2 hover:bg-white rounded-full transition-colors border border-transparent hover:border-slate-200"
+                    className="p-1.5 md:p-2 hover:bg-white rounded-full transition-colors border border-transparent hover:border-slate-200"
                 >
-                    <ChevronLeft className="w-6 h-6 text-slate-600" />
+                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-slate-600" />
                 </button>
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">VIDEO LESSONS</h1>
-                    <p className="text-slate-500 font-medium">Explore the complete curriculum of the Prophetic Journey</p>
+                    <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">VIDEO LESSONS</h1>
+                    <p className="text-slate-500 text-xs md:text-base font-medium">Explore the curriculum of the Prophetic Journey</p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {videos.map((video) => {
                     const youtubeId = getYoutubeVideoId(video.video_link);
                     const isWatched = watchedVideos.includes(video.video_id);
@@ -240,7 +240,7 @@ export const VideoLibrary: React.FC = () => {
                     return (
                         <div
                             key={video.video_id}
-                            className="card group hover:shadow-2xl transition-all duration-500 cursor-pointer border-slate-200 overflow-hidden flex flex-col"
+                            className="card group hover:shadow-2xl transition-all duration-500 cursor-pointer border-slate-200 overflow-hidden flex flex-col rounded-[24px] md:rounded-[32px]"
                             onClick={() => handlePlayVideo(video)}
                         >
                             {/* Thumbnail */}
@@ -282,19 +282,19 @@ export const VideoLibrary: React.FC = () => {
                             </div>
 
                             {/* Content */}
-                            <div className="p-5 flex-1 flex flex-col">
-                                <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-1.5">Lesson {video.video_id}</span>
-                                <h3 className="text-lg font-bold text-slate-900 mb-2 leading-tight group-hover:text-primary-600 transition-colors uppercase tracking-tight">
+                            <div className="p-4 md:p-5 flex-1 flex flex-col">
+                                <span className="text-[9px] md:text-[10px] font-black text-primary-600 uppercase tracking-widest mb-1 md:mb-1.5">Lesson {video.video_id}</span>
+                                <h3 className="text-base md:text-lg font-bold text-slate-900 mb-2 leading-tight group-hover:text-primary-600 transition-colors uppercase tracking-tight truncate">
                                     {video.title}
                                 </h3>
 
-                                <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
-                                    <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase">
-                                        <Calendar className="w-3.5 h-3.5" />
+                                <div className="mt-auto pt-3 md:pt-4 flex items-center justify-between border-t border-slate-100">
+                                    <div className="flex items-center gap-2 text-slate-400 text-[10px] md:text-xs font-bold uppercase">
+                                        <Calendar className="w-3 md:w-3.5 h-3 md:h-3.5" />
                                         <span>{video.scheduling_datetime ? new Date(video.scheduling_datetime).toLocaleDateString() : 'Curriculum'}</span>
                                     </div>
                                     <div className="text-primary-600 group-hover:translate-x-1 transition-transform">
-                                        <ExternalLink className="w-4 h-4" />
+                                        <ExternalLink className="w-3.5 md:w-4 h-3.5 md:h-4" />
                                     </div>
                                 </div>
                             </div>
@@ -328,16 +328,18 @@ export const VideoLibrary: React.FC = () => {
                             initial={{ opacity: 0, scale: 0.9, y: 30 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                            className="relative w-full max-w-6xl z-10"
+                            className="relative w-full max-w-6xl z-10 flex flex-col gap-4"
                         >
-                            <button
-                                onClick={() => setSelectedVideo(null)}
-                                className="absolute -top-16 right-0 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all group"
-                            >
-                                <X className="w-6 h-6 group-hover:rotate-90 transition-transform" />
-                            </button>
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={() => setSelectedVideo(null)}
+                                    className="w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all group"
+                                >
+                                    <X className="w-5 h-5 md:w-6 md:h-6 group-hover:rotate-90 transition-transform" />
+                                </button>
+                            </div>
 
-                            <div className="bg-white rounded-[40px] overflow-hidden shadow-2xl flex flex-col md:flex-row h-[70vh]">
+                            <div className="bg-white rounded-[24px] md:rounded-[40px] overflow-hidden shadow-2xl flex flex-col md:flex-row h-auto md:h-[70vh] max-h-[90vh]">
                                 {/* Left: Content Area */}
                                 <div className="flex-[2] bg-black relative">
                                     <VideoPlayer
@@ -361,11 +363,11 @@ export const VideoLibrary: React.FC = () => {
                                 </div>
 
                                 {/* Right: Interaction Area */}
-                                <div className="flex-1 p-10 bg-white overflow-y-auto">
-                                    <div className="mb-10">
-                                        <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-2 block">Lesson Masterclass</span>
-                                        <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-2">{selectedVideo.title}</h3>
-                                        <div className="flex items-center gap-3 text-slate-400 text-[10px] font-black uppercase tracking-widest">
+                                <div className="flex-1 p-6 md:p-10 bg-white overflow-y-auto">
+                                    <div className="mb-6 md:mb-10">
+                                        <span className="text-[9px] md:text-[10px] font-black text-primary-600 uppercase tracking-widest mb-1 md:mb-2 block">Lesson Masterclass</span>
+                                        <h3 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight mb-2">{selectedVideo.title}</h3>
+                                        <div className="flex items-center gap-3 text-slate-400 text-[9px] md:text-[10px] font-black uppercase tracking-widest">
                                             <span>Class {selectedVideo.class_number}</span>
                                             <span>•</span>
                                             <span className="text-primary-600">Mastery Session</span>

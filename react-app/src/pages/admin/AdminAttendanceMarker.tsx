@@ -231,27 +231,27 @@ export const AdminAttendanceMarker: React.FC = () => {
     }
 
     return (
-        <div className="p-8 md:p-12 max-w-[1400px] mx-auto">
+        <div className="p-4 md:p-12 max-w-[1400px] mx-auto">
             {/* Header */}
-            <header className="mb-8">
-                <div className="flex items-center justify-between">
+            <header className="mb-6 md:mb-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
-                            <span className="badge bg-violet-100 text-violet-700">Admin Portal</span>
+                            <span className="badge bg-violet-100 text-violet-700 text-[10px]">Admin Portal</span>
                             <span className="text-slate-300">/</span>
-                            <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Attendance</span>
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Attendance</span>
                         </div>
-                        <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tight">
+                        <h1 className="text-2xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">
                             Attendance <span className="text-primary-600">Management</span>
                         </h1>
-                        <p className="text-slate-500 font-medium mt-2">View, create, edit, and delete attendance records</p>
+                        <p className="text-slate-500 text-sm md:text-base font-medium mt-1">View, track, and manage class records</p>
                     </div>
                     <button
                         onClick={handleCreate}
-                        className="btn btn-primary px-6 py-3 rounded-2xl flex items-center gap-2"
+                        className="bg-primary-600 text-white px-6 py-3 rounded-xl md:rounded-2xl flex items-center justify-center gap-2 font-black uppercase tracking-widest text-xs shadow-lg shadow-primary-500/20 hover:bg-primary-700 transition-all hover:scale-[1.02] active:scale-95"
                     >
-                        <Plus className="w-5 h-5" />
-                        Create New Attendance
+                        <Plus className="w-4 h-4" />
+                        New Attendance
                     </button>
                 </div>
             </header>
@@ -272,59 +272,59 @@ export const AdminAttendanceMarker: React.FC = () => {
                                 key={group.class_number}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="card p-8 bg-white rounded-[40px] shadow-xl border border-slate-100"
+                                className="bg-white rounded-[24px] md:rounded-[40px] p-5 md:p-8 shadow-sm hover:shadow-xl transition-all border border-slate-100"
                             >
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="flex items-center gap-6">
-                                        <div className="w-16 h-16 rounded-2xl bg-primary-50 text-primary-600 flex flex-col items-center justify-center font-black shadow-inner">
-                                            <span className="text-[10px] uppercase opacity-60">Class</span>
-                                            <span className="text-2xl">{group.class_number}</span>
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                                    <div className="flex items-center gap-4 md:gap-6">
+                                        <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary-50 text-primary-600 flex flex-col items-center justify-center font-black shadow-inner shrink-0">
+                                            <span className="text-[8px] uppercase opacity-60">Class</span>
+                                            <span className="text-lg md:text-2xl">{group.class_number}</span>
                                         </div>
-                                        <div>
-                                            <h3 className="text-2xl font-black text-slate-900 mb-1">{group.session_topic}</h3>
-                                            <div className="flex items-center gap-4 text-sm text-slate-500">
+                                        <div className="min-w-0">
+                                            <h3 className="text-lg md:text-2xl font-black text-slate-900 mb-1 truncate">{group.session_topic}</h3>
+                                            <div className="flex items-center gap-3 md:gap-4 text-[10px] md:text-sm text-slate-500">
                                                 <span className="flex items-center gap-1">
-                                                    <Calendar className="w-4 h-4" />
+                                                    <Calendar className="w-3.5 h-3.5" />
                                                     {new Date(group.date_of_class).toLocaleDateString()}
                                                 </span>
                                                 <span className="flex items-center gap-1">
-                                                    <Users className="w-4 h-4" />
-                                                    {group.records.length} Students
+                                                    <Users className="w-3.5 h-3.5" />
+                                                    {group.records.length} <span className="hidden xs:inline">Students</span>
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-2 shrink-0">
                                         <button
                                             onClick={() => handleEdit(group)}
-                                            className="px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-sm font-black uppercase hover:bg-blue-100 transition-colors flex items-center gap-2"
+                                            className="flex-1 sm:flex-none px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-[10px] font-black uppercase hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
                                         >
-                                            <Edit2 className="w-4 h-4" />
+                                            <Edit2 className="w-3.5 h-3.5" />
                                             Edit
                                         </button>
                                         <button
                                             onClick={() => handleDelete(group.class_number)}
-                                            className="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl text-sm font-black uppercase hover:bg-rose-100 transition-colors flex items-center gap-2"
+                                            className="flex-1 sm:flex-none px-4 py-2 bg-rose-50 text-rose-700 rounded-xl text-[10px] font-black uppercase hover:bg-rose-100 transition-colors flex items-center justify-center gap-2"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-3.5 h-3.5" />
                                             Delete
                                         </button>
                                     </div>
                                 </div>
 
                                 {/* Stats */}
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="p-4 bg-emerald-50 rounded-2xl">
-                                        <div className="text-emerald-600 text-sm font-black uppercase tracking-widest mb-1">Present</div>
-                                        <div className="text-3xl font-black text-emerald-700">{counts.present}</div>
+                                <div className="grid grid-cols-3 gap-2 md:gap-4">
+                                    <div className="p-3 md:p-4 bg-emerald-50 rounded-xl md:rounded-2xl text-center sm:text-left">
+                                        <div className="text-emerald-600 text-[8px] md:text-[10px] font-black uppercase tracking-widest mb-1">Present</div>
+                                        <div className="text-xl md:text-3xl font-black text-emerald-700">{counts.present}</div>
                                     </div>
-                                    <div className="p-4 bg-rose-50 rounded-2xl">
-                                        <div className="text-rose-600 text-sm font-black uppercase tracking-widest mb-1">Absent</div>
-                                        <div className="text-3xl font-black text-rose-700">{counts.absent}</div>
+                                    <div className="p-3 md:p-4 bg-rose-50 rounded-xl md:rounded-2xl text-center sm:text-left">
+                                        <div className="text-rose-600 text-[8px] md:text-[10px] font-black uppercase tracking-widest mb-1">Absent</div>
+                                        <div className="text-xl md:text-3xl font-black text-rose-700">{counts.absent}</div>
                                     </div>
-                                    <div className="p-4 bg-amber-50 rounded-2xl">
-                                        <div className="text-amber-600 text-sm font-black uppercase tracking-widest mb-1">Leave</div>
-                                        <div className="text-3xl font-black text-amber-700">{counts.leave}</div>
+                                    <div className="p-3 md:p-4 bg-amber-50 rounded-xl md:rounded-2xl text-center sm:text-left">
+                                        <div className="text-amber-600 text-[8px] md:text-[10px] font-black uppercase tracking-widest mb-1">Leave</div>
+                                        <div className="text-xl md:text-3xl font-black text-amber-700">{counts.leave}</div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -351,33 +351,33 @@ export const AdminAttendanceMarker: React.FC = () => {
                             className="bg-white rounded-[40px] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
                         >
                             {/* Modal Header */}
-                            <div className="p-8 border-b border-slate-100">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h2 className="text-3xl font-black text-slate-900">
+                            <div className="p-6 md:p-8 border-b border-slate-100 shrink-0">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="min-w-0">
+                                        <h2 className="text-xl md:text-3xl font-black text-slate-900 truncate">
                                             {editingClass !== null ? 'Edit' : 'Create'} Attendance
                                         </h2>
-                                        <p className="text-slate-500 mt-1">
+                                        <p className="text-slate-500 text-xs md:text-sm mt-1 truncate">
                                             {editingClass !== null
-                                                ? `Update attendance for Class ${formData.class_number}`
-                                                : 'Mark attendance for a new class'}
+                                                ? `Update Class ${formData.class_number}`
+                                                : 'Mark new class attendance'}
                                         </p>
                                     </div>
                                     <button
                                         onClick={() => setIsModalOpen(false)}
-                                        className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
+                                        className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors shrink-0"
                                     >
-                                        <X className="w-5 h-5 text-slate-600" />
+                                        <X className="w-4 h-4 md:w-5 md:h-5 text-slate-600" />
                                     </button>
                                 </div>
                             </div>
 
                             {/* Modal Content */}
-                            <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
+                            <div className="p-6 md:p-8 overflow-y-auto max-h-[calc(90vh-160px)]">
                                 {/* Form */}
-                                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
                                     <div>
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">
+                                        <label className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">
                                             <Calendar className="w-3 h-3 inline mr-1" />
                                             Class Number
                                         </label>
@@ -387,11 +387,11 @@ export const AdminAttendanceMarker: React.FC = () => {
                                             value={formData.class_number}
                                             onChange={(e) => setFormData({ ...formData, class_number: Number(e.target.value) })}
                                             disabled={editingClass !== null}
-                                            className="input w-full bg-slate-50 border-none px-4 py-3 rounded-xl font-bold text-lg disabled:opacity-50"
+                                            className="w-full bg-slate-50 border-none px-4 py-2.5 md:py-3 rounded-xl font-bold text-base md:text-lg disabled:opacity-50"
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">
+                                        <label className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">
                                             <Sparkles className="w-3 h-3 inline mr-1" />
                                             Class Topic
                                         </label>
@@ -399,81 +399,84 @@ export const AdminAttendanceMarker: React.FC = () => {
                                             type="text"
                                             value={formData.class_topic}
                                             onChange={(e) => setFormData({ ...formData, class_topic: e.target.value })}
-                                            className="input w-full bg-slate-50 border-none px-4 py-3 rounded-xl font-bold"
+                                            className="w-full bg-slate-50 border-none px-4 py-2.5 md:py-3 rounded-xl font-bold text-sm md:text-base"
                                             placeholder="e.g., Introduction to Seerah"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Bulk Actions */}
-                                <div className="mb-6 p-4 bg-slate-50 rounded-2xl">
-                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400 mr-3">Bulk Mark:</span>
+                                <div className="mb-6 p-4 bg-slate-50 rounded-2xl flex flex-wrap items-center gap-2">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 w-full mb-1">Bulk Actions</span>
                                     <button
                                         onClick={() => setStatusForAll('Present')}
-                                        className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors mr-2"
+                                        className="flex-1 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center justify-center gap-1"
                                     >
-                                        <CheckCircle2 className="w-3 h-3 inline mr-1" />
-                                        All Present
+                                        <CheckCircle2 className="w-3 h-3" />
+                                        Present
                                     </button>
                                     <button
                                         onClick={() => setStatusForAll('Absent')}
-                                        className="px-4 py-2 bg-rose-50 text-rose-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-rose-100 transition-colors mr-2"
+                                        className="flex-1 px-3 py-2 bg-rose-50 text-rose-700 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-rose-100 transition-colors flex items-center justify-center gap-1"
                                     >
-                                        <XCircle className="w-3 h-3 inline mr-1" />
-                                        All Absent
+                                        <XCircle className="w-3 h-3" />
+                                        Absent
                                     </button>
                                     <button
                                         onClick={() => setStatusForAll('Leave')}
-                                        className="px-4 py-2 bg-amber-50 text-amber-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-amber-100 transition-colors"
+                                        className="flex-1 px-3 py-2 bg-amber-50 text-amber-700 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-amber-100 transition-colors flex items-center justify-center gap-1"
                                     >
-                                        <Pause className="w-3 h-3 inline mr-1" />
-                                        All Leave
+                                        <Pause className="w-3 h-3" />
+                                        Leave
                                     </button>
                                 </div>
 
                                 {/* Student List */}
-                                <div className="space-y-3">
+                                <div className="space-y-4 md:space-y-3">
                                     {students.map((student) => (
                                         <div
                                             key={student.id}
-                                            className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-colors"
+                                            className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 rounded-[20px] md:rounded-2xl hover:bg-slate-100 transition-colors gap-4"
                                         >
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-black text-sm">
+                                            <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                                                <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-black text-sm shrink-0">
                                                     {student.name.charAt(0).toUpperCase()}
                                                 </div>
-                                                <div>
-                                                    <div className="font-bold text-slate-900">{student.name}</div>
-                                                    <div className="text-xs text-slate-500">{student.email}</div>
+                                                <div className="min-w-0">
+                                                    <div className="font-bold text-slate-900 truncate text-sm md:text-base">{student.name}</div>
+                                                    <div className="text-[10px] md:text-xs text-slate-500 truncate">{student.email}</div>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={() => setAttendanceStatus({ ...attendanceStatus, [student.id]: 'Present' })}
-                                                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase transition-colors ${attendanceStatus[student.id] === 'Present'
-                                                        ? 'bg-emerald-500 text-white'
-                                                        : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                                                    className={`flex-1 sm:flex-none px-4 py-2 md:py-2 rounded-xl text-[10px] font-black uppercase transition-colors flex items-center justify-center gap-1.5 ${attendanceStatus[student.id] === 'Present'
+                                                        ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20'
+                                                        : 'bg-white text-emerald-600 border border-emerald-100 hover:bg-emerald-50'
                                                         }`}
                                                 >
-                                                    <CheckCircle2 className="w-4 h-4" />
+                                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                                    <span className="sm:hidden">Present</span>
                                                 </button>
                                                 <button
                                                     onClick={() => setAttendanceStatus({ ...attendanceStatus, [student.id]: 'Absent' })}
-                                                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase transition-colors ${attendanceStatus[student.id] === 'Absent'
-                                                        ? 'bg-rose-500 text-white'
-                                                        : 'bg-rose-50 text-rose-700 hover:bg-rose-100'
+                                                    className={`flex-1 sm:flex-none px-4 py-2 md:py-2 rounded-xl text-[10px] font-black uppercase transition-colors flex items-center justify-center gap-1.5 ${attendanceStatus[student.id] === 'Absent'
+                                                        ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20'
+                                                        : 'bg-white text-rose-600 border border-rose-100 hover:bg-rose-50'
                                                         }`}
                                                 >
-                                                    <XCircle className="w-4 h-4" />
+                                                    <XCircle className="w-3.5 h-3.5" />
+                                                    <span className="sm:hidden">Absent</span>
                                                 </button>
                                                 <button
                                                     onClick={() => setAttendanceStatus({ ...attendanceStatus, [student.id]: 'Leave' })}
-                                                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase transition-colors ${attendanceStatus[student.id] === 'Leave'
-                                                        ? 'bg-amber-500 text-white'
-                                                        : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
+                                                    className={`flex-1 sm:flex-none px-4 py-2 md:py-2 rounded-xl text-[10px] font-black uppercase transition-colors flex items-center justify-center gap-1.5 ${attendanceStatus[student.id] === 'Leave'
+                                                        ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/20'
+                                                        : 'bg-white text-amber-600 border border-amber-100 hover:bg-amber-50'
                                                         }`}
                                                 >
-                                                    <Pause className="w-4 h-4" />
+                                                    <Pause className="w-3.5 h-3.5" />
+                                                    <span className="sm:hidden">Leave</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -482,27 +485,24 @@ export const AdminAttendanceMarker: React.FC = () => {
                             </div>
 
                             {/* Modal Footer */}
-                            <div className="p-8 border-t border-slate-100 flex justify-end gap-3">
+                            <div className="p-6 md:p-8 border-t border-slate-100 flex items-center justify-end gap-3 shrink-0">
                                 <button
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-black hover:bg-slate-200 transition-colors"
+                                    className="px-5 md:px-6 py-2.5 md:py-3 bg-slate-100 text-slate-700 rounded-xl md:rounded-2xl font-black text-xs md:text-sm hover:bg-slate-200 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={() => saveMutation.mutate()}
                                     disabled={saveMutation.isPending || !formData.class_topic.trim()}
-                                    className="px-6 py-3 bg-primary-600 text-white rounded-2xl font-black hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                    className="px-5 md:px-6 py-2.5 md:py-3 bg-primary-600 text-white rounded-xl md:rounded-2xl font-black text-xs md:text-sm hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-primary-500/20"
                                 >
                                     {saveMutation.isPending ? (
-                                        <>
-                                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                                            Saving...
-                                        </>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                                     ) : (
                                         <>
-                                            <Trophy className="w-5 h-5" />
-                                            Save Attendance
+                                            <Trophy className="w-4 h-4" />
+                                            <span>Save</span>
                                         </>
                                     )}
                                 </button>
@@ -527,29 +527,29 @@ export const AdminAttendanceMarker: React.FC = () => {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white rounded-[40px] shadow-2xl max-w-md w-full p-8 text-center"
+                            className="bg-white rounded-[32px] md:rounded-[40px] shadow-2xl max-w-md w-full p-6 md:p-8 text-center"
                         >
-                            <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-[32px] flex items-center justify-center mx-auto mb-6">
-                                <Trash2 className="w-10 h-10" />
+                            <div className="w-16 h-16 md:w-20 md:h-20 bg-rose-50 text-rose-500 rounded-2xl md:rounded-[32px] flex items-center justify-center mx-auto mb-6">
+                                <Trash2 className="w-8 h-8 md:w-10 md:h-10" />
                             </div>
-                            <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Delete Attendance?</h3>
-                            <p className="text-slate-500 mb-8 font-medium">Are you sure you want to delete attendance for Class {deleteConfirmation.classNumber}? This action cannot be undone.</p>
-                            <div className="grid grid-cols-2 gap-4">
+                            <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Delete?</h3>
+                            <p className="text-slate-500 mb-8 font-medium text-sm md:text-base">Delete attendance for Class {deleteConfirmation.classNumber}?</p>
+                            <div className="grid grid-cols-2 gap-3 md:gap-4">
                                 <button
                                     onClick={() => setDeleteConfirmation({ isOpen: false, classNumber: null })}
-                                    className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-black hover:bg-slate-200 transition-colors"
+                                    className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl md:rounded-2xl font-black text-xs md:text-sm hover:bg-slate-200 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={confirmDelete}
                                     disabled={deleteMutation.isPending}
-                                    className="px-6 py-3 bg-rose-600 text-white rounded-2xl font-black hover:bg-rose-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="px-6 py-3 bg-rose-600 text-white rounded-xl md:rounded-2xl font-black text-xs md:text-sm hover:bg-rose-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-rose-500/20"
                                 >
                                     {deleteMutation.isPending ? (
-                                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                                     ) : (
-                                        'Delete Now'
+                                        'Delete'
                                     )}
                                 </button>
                             </div>

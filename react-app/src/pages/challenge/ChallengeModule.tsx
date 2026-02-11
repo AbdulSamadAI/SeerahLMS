@@ -136,18 +136,18 @@ export const ChallengeModule: React.FC = () => {
     const isCompleted = !!previousSubmission;
 
     return (
-        <div className="max-w-3xl mx-auto px-6 py-12 pb-32">
-            <div className="flex flex-col items-center text-center mb-16 space-y-4">
+        <div className="max-w-3xl mx-auto px-4 md:px-6 py-8 md:py-12 pb-32">
+            <div className="flex flex-col items-center text-center mb-10 md:mb-16 space-y-4">
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => navigate(-1)}
-                        className="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm border border-slate-100 hover:border-primary-200 transition-all group"
+                        className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white rounded-xl shadow-sm border border-slate-100 hover:border-primary-200 transition-all group"
                     >
-                        <ChevronLeft className="w-5 h-5 text-slate-400 group-hover:text-primary-600" />
+                        <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 text-slate-400 group-hover:text-primary-600" />
                     </button>
-                    <span className="badge bg-primary-100 text-primary-700">Divine Trial</span>
+                    <span className="badge bg-primary-100 text-primary-700 text-[10px] md:text-xs">Divine Trial</span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-none uppercase">Class {classNumber} <span className="text-primary-600 font-serif normal-case italic">Challenge</span></h1>
+                <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-none uppercase">Class {classNumber} <span className="text-primary-600 font-serif normal-case italic">Challenge</span></h1>
             </div>
 
             <motion.div
@@ -160,12 +160,12 @@ export const ChallengeModule: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
                 <div className={`absolute top-0 left-0 w-full h-2 ${isCompleted ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-primary-600 shadow-[0_0_15px_rgba(124,58,237,0.5)]'}`} />
 
-                <div className="p-10 md:p-16 flex flex-col items-center relative z-10">
+                <div className="p-8 md:p-16 flex flex-col items-center relative z-10">
                     <motion.div
                         whileHover={{ rotate: 12, scale: 1.1 }}
-                        className={`w-32 h-32 ${isCompleted ? 'bg-emerald-50 text-emerald-500 shadow-emerald-100' : 'bg-primary-50 text-primary-600 shadow-primary-100'} rounded-[40px] flex items-center justify-center mb-12 shadow-2xl transition-all duration-700`}
+                        className={`w-24 h-24 md:w-32 md:h-32 ${isCompleted ? 'bg-emerald-50 text-emerald-500 shadow-emerald-100' : 'bg-primary-50 text-primary-600 shadow-primary-100'} rounded-[32px] md:rounded-[40px] flex items-center justify-center mb-8 md:mb-12 shadow-2xl transition-all duration-700`}
                     >
-                        {isCompleted ? <Trophy className="w-14 h-14" /> : <Target className="w-14 h-14" />}
+                        {isCompleted ? <Trophy className="w-10 h-10 md:w-14 md:h-14" /> : <Target className="w-10 h-10 md:w-14 md:h-14" />}
                     </motion.div>
 
                     <AnimatePresence>
@@ -181,33 +181,33 @@ export const ChallengeModule: React.FC = () => {
                         )}
                     </AnimatePresence>
 
-                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 tracking-tighter uppercase leading-none">
+                    <h2 className="text-2xl md:text-5xl font-black text-slate-900 mb-6 md:mb-8 tracking-tighter uppercase leading-none text-center">
                         {challenge.title}
                     </h2>
 
-                    <div className="max-w-xl mx-auto text-slate-500 text-xl font-medium leading-relaxed mb-12 text-center whitespace-pre-wrap selection:bg-primary-100 selection:text-primary-900">
+                    <div className="max-w-xl mx-auto text-slate-500 text-sm md:text-xl font-medium leading-relaxed mb-8 md:mb-12 text-center whitespace-pre-wrap selection:bg-primary-100 selection:text-primary-900">
                         {challenge.description}
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-center gap-6 mb-16">
-                        <div className="flex items-center gap-3 bg-slate-50 px-6 py-4 rounded-3xl border border-slate-100 shadow-inner group/stat">
-                            <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover/stat:rotate-12 transition-transform">
-                                <Award className="w-5 h-5 text-primary-600" />
+                    <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-12 md:mb-16">
+                        <div className="flex items-center gap-3 bg-slate-50 px-4 md:px-6 py-3 md:py-4 rounded-2xl md:rounded-3xl border border-slate-100 shadow-inner group/stat">
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover/stat:rotate-12 transition-transform">
+                                <Award className="w-4 h-4 md:w-5 md:h-5 text-primary-600" />
                             </div>
                             <div className="flex flex-col items-start leading-none">
-                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Points Value</span>
-                                <span className="text-xl font-black text-slate-900">{challenge.max_points} Points</span>
+                                <span className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Points</span>
+                                <span className="text-base md:text-xl font-black text-slate-900">{challenge.max_points} Pts</span>
                             </div>
                         </div>
 
                         {!isCompleted && (
-                            <div className="flex items-center gap-3 bg-primary-50 px-6 py-4 rounded-3xl border border-primary-100 shadow-inner group/stat">
-                                <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover/stat:rotate-12 transition-transform">
-                                    <Flame className="w-5 h-5 text-primary-600" />
+                            <div className="flex items-center gap-3 bg-primary-50 px-4 md:px-6 py-3 md:py-4 rounded-2xl md:rounded-3xl border border-primary-100 shadow-inner group/stat">
+                                <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover/stat:rotate-12 transition-transform">
+                                    <Flame className="w-4 h-4 md:w-5 md:h-5 text-primary-600" />
                                 </div>
                                 <div className="flex flex-col items-start leading-none">
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Divine Aura</span>
-                                    <span className="text-xl font-black text-primary-600">Active</span>
+                                    <span className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Aura</span>
+                                    <span className="text-base md:text-xl font-black text-primary-600">Active</span>
                                 </div>
                             </div>
                         )}
@@ -218,14 +218,14 @@ export const ChallengeModule: React.FC = () => {
                             <motion.div
                                 initial={{ scale: 0.9, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
-                                className="bg-emerald-50/50 border-2 border-dashed border-emerald-200 rounded-[32px] p-8 text-emerald-800 font-black uppercase tracking-widest flex items-center justify-center gap-4 text-center"
+                                className="bg-emerald-50/50 border-2 border-dashed border-emerald-200 rounded-3xl md:rounded-[32px] p-6 md:p-8 text-emerald-800 font-black uppercase tracking-widest flex items-center justify-center gap-3 md:gap-4 text-center text-[10px] md:text-sm"
                             >
-                                <Zap className="w-6 h-6 fill-current" />
-                                Your contribution has been recorded in the Divine Registry
+                                <Zap className="w-5 h-5 md:w-6 md:h-6 fill-current" />
+                                Recorded in the Divine Registry
                             </motion.div>
                             <button
                                 onClick={() => navigate('/')}
-                                className="text-slate-400 font-bold hover:text-slate-600 transition-all uppercase tracking-[0.2em] text-xs flex items-center gap-2 mx-auto py-4"
+                                className="text-slate-400 font-bold hover:text-slate-600 transition-all uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center gap-2 mx-auto py-4"
                             >
                                 Return to Sanctum
                             </button>
@@ -234,10 +234,10 @@ export const ChallengeModule: React.FC = () => {
                         <button
                             onClick={() => completeChallenge.mutate()}
                             disabled={completeChallenge.isPending}
-                            className="w-full py-7 rounded-[32px] text-xl font-black uppercase tracking-[0.2em] shadow-[0_25px_50px_-12px_rgba(124,58,237,0.3)] bg-primary-600 text-white hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-4 hover:bg-primary-700"
+                            className="w-full py-5 md:py-7 rounded-[24px] md:rounded-[32px] text-base md:text-xl font-black uppercase tracking-[0.2em] shadow-[0_25px_50px_-12px_rgba(124,58,237,0.3)] bg-primary-600 text-white hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 md:gap-4 hover:bg-primary-700"
                         >
-                            {completeChallenge.isPending ? <RefreshCw className="w-7 h-7 animate-spin" /> : <CheckCircle2 className="w-7 h-7" />}
-                            I Have Forged My Path
+                            {completeChallenge.isPending ? <RefreshCw className="w-5 h-5 md:w-7 md:h-7 animate-spin" /> : <CheckCircle2 className="w-5 h-5 md:w-7 md:h-7" />}
+                            Forged My Path
                         </button>
                     )}
                 </div>

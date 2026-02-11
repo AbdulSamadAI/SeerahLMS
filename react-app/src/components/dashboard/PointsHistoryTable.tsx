@@ -145,48 +145,48 @@ export const PointsHistoryTable: React.FC<PointsHistoryTableProps> = ({ userId }
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="group bg-white rounded-[32px] p-5 shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-500 border border-slate-100 flex items-center gap-6"
+                    className="group bg-white rounded-[24px] md:rounded-[32px] p-4 md:p-5 shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-500 border border-slate-100 flex items-center gap-4 md:gap-6"
                 >
-                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner relative transition-transform group-hover:scale-110 duration-500 ${tx.type === 'Video' ? 'bg-amber-50 text-amber-600' :
+                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex-shrink-0 flex items-center justify-center shadow-inner relative transition-transform group-hover:scale-110 duration-500 ${tx.type === 'Video' ? 'bg-amber-50 text-amber-600' :
                         tx.type === 'Quiz' ? 'bg-indigo-50 text-indigo-600' :
                             tx.type === 'Challenge' ? 'bg-rose-50 text-rose-600' :
                                 'bg-emerald-50 text-emerald-600'
                         }`}>
-                        {tx.type === 'Video' ? <Play className="w-6 h-6 fill-current" /> :
-                            tx.type === 'Quiz' ? <Brain className="w-6 h-6" /> :
-                                tx.type === 'Challenge' ? <Target className="w-6 h-6" /> :
-                                    <CheckCircle2 className="w-6 h-6" />}
+                        {tx.type === 'Video' ? <Play className="w-5 h-5 md:w-6 md:h-6 fill-current" /> :
+                            tx.type === 'Quiz' ? <Brain className="w-5 h-5 md:w-6 md:h-6" /> :
+                                tx.type === 'Challenge' ? <Target className="w-5 h-5 md:w-6 md:h-6" /> :
+                                    <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6" />}
 
-                        <div className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-50 w-6 h-6 rounded-full flex items-center justify-center">
-                            <Award className="w-3.5 h-3.5 text-primary-600" />
+                        <div className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 bg-white shadow-md border border-slate-50 w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center">
+                            <Award className="w-3 md:w-3.5 h-3 md:h-3.5 text-primary-600" />
                         </div>
                     </div>
 
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${tx.type === 'Video' ? 'bg-amber-100 text-amber-700' :
+                        <div className="flex items-center gap-2 mb-0.5 md:mb-1 flex-wrap">
+                            <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${tx.type === 'Video' ? 'bg-amber-100 text-amber-700' :
                                 tx.type === 'Quiz' ? 'bg-indigo-100 text-indigo-700' :
                                     tx.type === 'Challenge' ? 'bg-rose-100 text-rose-700' :
                                         'bg-emerald-100 text-emerald-700'
                                 }`}>
                                 {tx.type}
                             </span>
-                            <span className="text-[10px] font-medium text-slate-400 flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
+                            <span className="text-[9px] md:text-[10px] font-medium text-slate-400 flex items-center gap-1">
+                                <Clock className="w-2.5 h-2.5 md:w-3 md:h-3" />
                                 {new Date(tx.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                             </span>
                         </div>
-                        <h4 className="font-bold text-slate-900 truncate group-hover:text-primary-600 transition-colors">
+                        <h4 className="font-bold text-slate-900 text-sm md:text-base truncate group-hover:text-primary-600 transition-colors">
                             {tx.title}
                         </h4>
                     </div>
 
-                    <div className="text-right">
-                        <div className="text-2xl font-black text-slate-900 flex items-center justify-end gap-1">
-                            <span className="text-primary-600 text-sm font-black">+</span>
+                    <div className="text-right flex-shrink-0">
+                        <div className="text-xl md:text-2xl font-black text-slate-900 flex items-center justify-end gap-0.5 md:gap-1">
+                            <span className="text-primary-600 text-xs md:text-sm font-black">+</span>
                             {tx.points}
                         </div>
-                        <div className="text-[9px] font-black uppercase tracking-widest text-slate-400">Points</div>
+                        <div className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-slate-400">Points</div>
                     </div>
                 </motion.div>
             ))}

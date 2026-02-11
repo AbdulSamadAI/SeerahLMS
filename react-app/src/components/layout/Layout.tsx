@@ -38,17 +38,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <div className="fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-50 to-transparent pointer-events-none z-[45]" />
 
             {/* Premium Header */}
-            <header className="fixed top-6 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-7xl z-50">
-                <nav className="glass rounded-[32px] px-6 py-3 flex items-center justify-between shadow-premium border-white/40">
+            <header className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] md:w-[calc(100%-48px)] max-w-7xl z-50">
+                <nav className="glass rounded-[24px] md:rounded-[32px] px-4 md:px-6 py-2.5 md:py-3 flex items-center justify-between shadow-premium border-white/40">
                     {/* Branding */}
                     <div
-                        className="flex items-center gap-3 cursor-pointer group"
+                        className="flex items-center gap-2 md:gap-3 cursor-pointer group"
                         onClick={() => navigate('/')}
                     >
-                        <div className="bg-primary-600 p-2.5 rounded-2xl shadow-lg shadow-primary-500/20 group-hover:scale-110 transition-transform duration-500">
-                            <Award className="w-5 h-5 text-white" />
+                        <div className="bg-primary-600 p-2 md:p-2.5 rounded-xl md:rounded-2xl shadow-lg shadow-primary-500/20 group-hover:scale-110 transition-transform duration-500">
+                            <Award className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </div>
-                        <span className="text-xl font-black tracking-tight uppercase">
+                        <span className="text-lg md:text-xl font-black tracking-tight uppercase">
                             Prophetic<span className="text-primary-600">PD</span>
                         </span>
                     </div>
@@ -72,15 +72,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                         ))}
                     </div>
 
-                    {/* Admin Portal Link Removed - Accessed via /admin only */}
-
                     {/* Actions */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         <button
                             onClick={() => navigate('/profile')}
-                            className="flex items-center gap-3 p-1.5 rounded-2xl hover:bg-white/50 transition-all border border-transparent hover:border-white/40 group"
+                            className="flex items-center gap-2 md:gap-3 p-1 rounded-xl md:rounded-2xl hover:bg-white/50 transition-all border border-transparent hover:border-white/40 group"
                         >
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-primary-500/20 group-hover:scale-105 transition-transform">
+                            <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-black text-xs md:text-sm shadow-lg shadow-primary-500/20 group-hover:scale-105 transition-transform">
                                 {(user?.user_metadata?.name || user?.email || 'U')[0].toUpperCase()}
                             </div>
                             <div className="hidden lg:flex flex-col items-start pr-2">
@@ -96,15 +94,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             </div>
                         </button>
 
-                        <div className="w-px h-8 bg-slate-200 mx-1 hidden sm:block" />
+                        <div className="w-px h-6 md:h-8 bg-slate-200 mx-0.5 md:mx-1 hidden xs:block" />
 
                         <NotificationBell />
 
-                        <div className="w-px h-8 bg-slate-200 mx-1 hidden sm:block" />
+                        <div className="w-px h-6 md:h-8 bg-slate-200 mx-0.5 md:mx-1 hidden sm:block" />
 
                         <button
                             onClick={handleSignOut}
-                            className="p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                            className="p-2 md:p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                             title="Leave Sanctuary"
                         >
                             <LogOut className="w-4 h-4" />

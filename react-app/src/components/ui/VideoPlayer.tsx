@@ -104,7 +104,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, onProgress, 
     if (!videoId && !videoUrl) return <div className="p-8 text-center text-slate-400 font-bold uppercase tracking-widest text-xs">No Video Source Available</div>;
 
     return (
-        <div ref={containerRef} className="w-full h-full bg-black rounded-[32px] overflow-hidden shadow-2xl relative group">
+        <div ref={containerRef} className="w-full h-full bg-black rounded-[24px] md:rounded-[32px] overflow-hidden shadow-2xl relative group">
             {videoId ? (
                 <div id={`player-${videoId}`} className="w-full h-full aspect-video" />
             ) : (

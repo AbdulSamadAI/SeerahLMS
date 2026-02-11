@@ -69,7 +69,7 @@ export const StudentDashboard: React.FC = () => {
             const calculatedTotalPoints = videoPts + quizPts + challengePts + attendancePts;
 
             // Optional: Update database if out of sync
-            if (userData?.points !== calculatedTotalPoints) {
+            if (userData?.data?.points !== calculatedTotalPoints) {
                 await supabase.from('users_extended').update({ points: calculatedTotalPoints }).eq('id', userId);
             }
 
@@ -134,32 +134,32 @@ export const StudentDashboard: React.FC = () => {
     ];
 
     return (
-        <div className="p-6 md:p-12 max-w-[1600px] mx-auto">
+        <div className="p-4 md:p-12 max-w-[1600px] mx-auto">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-2">
+                    <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-none mb-2">
                         Welcome, <span className="text-primary-600 underline decoration-4 decoration-primary-200">{profile?.name?.split(' ')[0] || 'Student'}</span>
                     </h1>
                     <p className="text-slate-500 font-medium">Continue your journey to mastery.</p>
                 </div>
-                <div className="flex items-center gap-2 bg-amber-50 text-amber-700 px-4 py-2 rounded-2xl border border-amber-100">
+                <div className="flex items-center self-start md:self-auto gap-2 bg-amber-50 text-amber-700 px-4 py-2 rounded-2xl border border-amber-100">
                     <Sun className="w-5 h-5 fill-current" />
                     <span className="text-xs font-black uppercase tracking-widest">Class {currentClass} Active</span>
                 </div>
             </div>
 
             {/* 1. Detailed Analytics (Restored Activity Breakdown) */}
-            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-8">Detailed Analytics</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+            <h2 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 md:mb-8">Detailed Analytics</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-12 md:mb-16">
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="card p-8 bg-white border-slate-100 shadow-lg rounded-[40px]"
+                    className="card p-6 md:p-8 bg-white border-slate-100 shadow-lg rounded-[32px] md:rounded-[40px]"
                 >
-                    <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-lg font-black text-slate-700 uppercase tracking-tight flex items-center gap-3">
+                    <div className="flex items-center justify-between mb-6 md:mb-8">
+                        <h3 className="text-base md:text-lg font-black text-slate-700 uppercase tracking-tight flex items-center gap-3">
                             <BarChart3 className="w-5 h-5 text-primary-600" />
                             Activity Breakdown
                         </h3>
@@ -182,33 +182,33 @@ export const StudentDashboard: React.FC = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    className="bg-gradient-to-br from-primary-600 to-indigo-700 rounded-[40px] p-8 md:p-10 shadow-2xl text-white relative overflow-hidden group min-h-[300px] flex flex-col justify-between"
+                    className="bg-gradient-to-br from-primary-600 to-indigo-700 rounded-[32px] md:rounded-[40px] p-6 md:p-10 shadow-2xl text-white relative overflow-hidden group min-h-[250px] md:min-h-[300px] flex flex-col justify-between"
                 >
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl group-hover:bg-white/10 transition-all duration-700" />
                     <div className="relative z-10 w-full">
-                        <div className="flex items-center justify-between mb-8">
-                            <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl">
-                                <Trophy className="w-6 h-6 text-amber-400" />
+                        <div className="flex items-center justify-between mb-6 md:mb-8">
+                            <div className="p-2.5 md:p-3 bg-white/10 backdrop-blur-md rounded-2xl">
+                                <Trophy className="w-5 h-5 md:w-6 md:h-6 text-amber-400" />
                             </div>
                             <div className="text-right">
-                                <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-1">Current Rank</div>
-                                <div className="text-3xl font-black italic">#{rank?.rank || '-'}</div>
+                                <div className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-1">Current Rank</div>
+                                <div className="text-2xl md:text-3xl font-black italic">#{rank?.rank || '-'}</div>
                             </div>
                         </div>
 
                         <div>
-                            <div className="text-5xl font-black mb-2 flex items-baseline gap-2">
+                            <div className="text-4xl md:text-5xl font-black mb-2 flex items-baseline gap-2">
                                 {stats?.points?.toLocaleString() || 0}
-                                <span className="text-sm font-bold opacity-40 uppercase tracking-widest">PTS</span>
+                                <span className="text-xs md:text-sm font-bold opacity-40 uppercase tracking-widest">PTS</span>
                             </div>
                             <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden mb-3">
                                 <motion.div
                                     initial={{ width: 0 }}
-                                    animate={{ width: `${((stats?.points || 0) % 500) / 500 * 100}% ` }}
+                                    animate={{ width: `${((stats?.points || 0) % 500) / 500 * 100}%` }}
                                     className="h-full bg-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.5)]"
                                 />
                             </div>
-                            <div className="flex justify-between text-[9px] font-black uppercase tracking-widest opacity-60">
+                            <div className="flex justify-between text-[8px] md:text-[9px] font-black uppercase tracking-widest opacity-60">
                                 <span>Level {Math.floor((stats?.points || 0) / 500) + 1}</span>
                                 <span>Next Level</span>
                             </div>
@@ -216,34 +216,34 @@ export const StudentDashboard: React.FC = () => {
                     </div>
                 </motion.div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
                 {statCards.map((stat, idx) => (
                     <motion.div
                         key={stat.label}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                        className="bg-white rounded-[32px] p-6 shadow-lg shadow-slate-100 border border-slate-50 flex flex-col items-center text-center group hover:scale-[1.03] transition-all duration-300"
+                        className="bg-white rounded-[24px] md:rounded-[32px] p-4 md:p-6 shadow-lg shadow-slate-100 border border-slate-50 flex flex-col items-center text-center group hover:scale-[1.03] transition-all duration-300"
                     >
-                        <div className={`w-12 h-12 ${stat.color} text-white rounded-2xl flex items-center justify-center mb-4 shadow-md`}>
-                            {React.cloneElement(stat.icon as any, { className: 'w-6 h-6' })}
+                        <div className={`w-10 h-10 md:w-12 md:h-12 ${stat.color} text-white rounded-xl md:rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-md`}>
+                            {React.cloneElement(stat.icon as any, { className: 'w-5 h-5 md:w-6 md:h-6' })}
                         </div>
-                        <span className="text-3xl font-black text-slate-900 mb-1">{stat.value}</span>
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
+                        <span className="text-2xl md:text-3xl font-black text-slate-900 mb-0.5 md:mb-1">{stat.value}</span>
+                        <span className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
                     </motion.div>
                 ))}
             </div>
 
             <div className="mb-12">
                 {/* 3. Point Breakdown */}
-                <div className="bg-white rounded-[40px] p-8 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-50">
-                    <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
-                        <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
-                            <TrendingUp className="w-6 h-6 text-primary-600" />
+                <div className="bg-white rounded-[32px] md:rounded-[40px] p-6 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-50">
+                    <div className="flex items-center justify-between mb-6 md:mb-8 pb-4 border-b border-slate-100">
+                        <h3 className="text-lg md:text-xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+                            <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-primary-600" />
                             Point Breakdown
                         </h3>
-                        <div className="badge bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                            Live Calculation
+                        <div className="badge bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest">
+                            Live
                         </div>
                     </div>
                     {userId && <PointsHistoryTable userId={userId} />}
@@ -252,7 +252,7 @@ export const StudentDashboard: React.FC = () => {
 
             {/* 5. Leaderboard */}
             <div className="mb-20">
-                <div className="bg-white rounded-[40px] p-10 shadow-xl shadow-slate-200/50 border border-slate-50">
+                <div className="bg-white rounded-[32px] md:rounded-[40px] p-6 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-50">
                     <Leaderboard />
                 </div>
             </div>
