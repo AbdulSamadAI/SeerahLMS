@@ -130,28 +130,28 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             key={item.to}
                             to={item.to}
                             className={({ isActive }) =>
-                                `flex flex-col items-center gap-1.5 px-4 py-2.5 rounded-[22px] transition-all duration-300 ${isActive
+                                `flex flex-col items-center gap-1 px-2 py-2.5 rounded-[22px] transition-all duration-300 min-w-0 flex-1 ${isActive
                                     ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
                                     : 'text-slate-400 hover:text-slate-600'
                                 }`
                             }
                         >
-                            {React.cloneElement(item.icon as React.ReactElement<any>, { className: 'w-5 h-5' })}
-                            <span className="text-[9px] font-black uppercase tracking-tight">{item.label}</span>
+                            {React.cloneElement(item.icon as React.ReactElement<any>, { className: 'w-5 h-5 flex-shrink-0' })}
+                            <span className="text-[8px] font-black uppercase tracking-tight max-w-full truncate text-center">{item.label}</span>
                         </NavLink>
                     ))}
 
                     <NavLink
                         to="/profile"
                         className={({ isActive }) =>
-                            `flex flex-col items-center gap-1.5 px-4 py-2.5 rounded-[22px] transition-all duration-300 ${isActive
+                            `flex flex-col items-center gap-1 px-2 py-2.5 rounded-[22px] transition-all duration-300 min-w-0 flex-1 ${isActive
                                 ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30'
                                 : 'text-slate-400 hover:text-slate-600'
                             }`
                         }
                     >
-                        <User className="w-5 h-5" />
-                        <span className="text-[9px] font-black uppercase tracking-tight">Me</span>
+                        <User className="w-5 h-5 flex-shrink-0" />
+                        <span className="text-[8px] font-black uppercase tracking-tight max-w-full truncate text-center">Me</span>
                     </NavLink>
                 </div>
             </nav>
