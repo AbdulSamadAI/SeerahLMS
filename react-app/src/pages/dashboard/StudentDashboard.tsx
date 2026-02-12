@@ -216,20 +216,20 @@ export const StudentDashboard: React.FC = () => {
                     </div>
                 </motion.div>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
                 {statCards.map((stat, idx) => (
                     <motion.div
                         key={stat.label}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                        className="bg-white rounded-[24px] md:rounded-[32px] p-4 md:p-6 shadow-lg shadow-slate-100 border border-slate-50 flex flex-col items-center text-center group hover:scale-[1.03] transition-all duration-300"
+                        className="bg-white rounded-[24px] md:rounded-[32px] p-5 md:p-6 shadow-lg shadow-slate-100 border border-slate-50 flex flex-col items-center text-center group hover:scale-[1.03] transition-all duration-300"
                     >
-                        <div className={`w-10 h-10 md:w-12 md:h-12 ${stat.color} text-white rounded-xl md:rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-md`}>
-                            {React.cloneElement(stat.icon as any, { className: 'w-5 h-5 md:w-6 md:h-6' })}
+                        <div className={`w-12 h-12 md:w-12 md:h-12 ${stat.color} text-white rounded-xl md:rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-md`}>
+                            {React.cloneElement(stat.icon as any, { className: 'w-6 h-6 md:w-6 md:h-6' })}
                         </div>
-                        <span className="text-2xl md:text-3xl font-black text-slate-900 mb-0.5 md:mb-1">{stat.value}</span>
-                        <span className="text-[8px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
+                        <span className="text-3xl md:text-3xl font-black text-slate-900 mb-1 md:mb-1">{stat.value}</span>
+                        <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</span>
                     </motion.div>
                 ))}
             </div>
