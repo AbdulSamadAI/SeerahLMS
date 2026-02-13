@@ -55,19 +55,19 @@ export const PointsHistoryTable: React.FC<PointsHistoryTableProps> = ({ userId }
                 supabase.from('attendance_records')
                     .select('class_number, session_topic, date_of_class, status')
                     .eq('user_id', userId)
-                    .eq('status', 'Present')
+                    .neq('status', 'Absent')
             ]);
 
             // Deduplicate Videos: prioritize watch progress data (v1) but ensure all completed (v2) are shown
             const videoMap = new Map<number, PointTransaction>();
 
-            // First add completed videos (v2) - these are the baseline for +10 pts
+            // First add completed videos (v2) - these are the baseline for +100 pts
             (videosComplete.data || []).forEach(v => {
                 videoMap.set(v.video_id, {
                     id: `video-${v.video_id}`,
                     type: 'Video',
                     title: (v.videos as any)?.title || `Video ${v.video_id}`,
-                    points: 10,
+                    points: 100,
                     date: v.completed_at || new Date().toISOString()
                 });
             });
@@ -78,7 +78,7 @@ export const PointsHistoryTable: React.FC<PointsHistoryTableProps> = ({ userId }
                     id: `video-${v.video_id}`,
                     type: 'Video',
                     title: (v.videos as any)?.title || `Video ${v.video_id}`,
-                    points: v.points_awarded,
+                    points: 100, // Always +100 now
                     date: v.last_updated
                 });
             });
@@ -93,13 +93,12 @@ export const PointsHistoryTable: React.FC<PointsHistoryTableProps> = ({ userId }
                     date: new Date().toISOString() // Fallback
                 })),
                 ...(challenges.data || []).map(c => {
-                    const ch = c.challenges as any;
-                    const pts = c.status === 'Completed' ? ch?.points_completed : ch?.points_tried;
+                    const pts = c.status === 'Completed' ? 100 : c.status === 'Tried' ? 50 : 0;
                     return {
                         id: `challenge-${c.submitted_at}`,
                         type: 'Challenge' as const,
-                        title: ch?.topic || 'Challenge',
-                        points: pts || 0,
+                        title: (c.challenges as any)?.topic || 'Challenge',
+                        points: pts,
                         date: c.submitted_at,
                         status: c.status
                     };
@@ -108,7 +107,7 @@ export const PointsHistoryTable: React.FC<PointsHistoryTableProps> = ({ userId }
                     id: `attendance-${a.class_number}`,
                     type: 'Attendance' as const,
                     title: a.session_topic || `Class ${a.class_number}`,
-                    points: 10, // Corrected to +10 as per user request
+                    points: a.status === 'Present' ? 100 : 50,
                     date: a.date_of_class
                 }))
             ];

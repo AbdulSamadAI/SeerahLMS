@@ -142,7 +142,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, onProgress, 
                 >
                     <CheckCircle2 className="w-16 h-16 text-emerald-500 mb-4" />
                     <h3 className="text-2xl font-black text-white uppercase tracking-tight">Lesson Mastered</h3>
-                    <p className="text-emerald-400 font-bold uppercase tracking-widest text-xs mt-2">+10 Points Awarded</p>
+                    <p className="text-emerald-400 font-bold uppercase tracking-widest text-xs mt-2">+100 Points Awarded</p>
                 </motion.div>
             )}
         </div>

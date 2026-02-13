@@ -46,7 +46,7 @@ export const StudentDashboard: React.FC = () => {
                 supabase.from('manual_quiz_grades').select('grade').eq('user_id', userId),
                 supabase.from('student_challenge_responses').select('status, challenges(points_completed, points_tried)').eq('user_id', userId),
                 supabase.from('users_extended').select('points').eq('id', userId).maybeSingle(),
-                supabase.from('attendance_records').select('class_number').eq('user_id', userId).eq('status', 'Present'),
+                supabase.from('attendance_records').select('class_number, status').eq('user_id', userId),
                 supabase.from('videos').select('video_id', { count: 'exact' }).eq('class_number', currentClass),
                 supabase.rpc('get_total_quiz_count')
             ]);
@@ -54,17 +54,20 @@ export const StudentDashboard: React.FC = () => {
             const videosCount = videosWatched.count || 0;
             const quizzesCount = quizzesData.data?.length || 0;
             const challengesCount = challengesData.data?.filter(c => c.status !== 'Not Completed').length || 0;
-            const attendanceCount = new Set(attendanceData.data?.map(a => a.class_number)).size;
+            const attendanceCount = new Set(attendanceData.data?.filter(a => a.status === 'Present').map(a => a.class_number)).size;
 
-            // Calculate Dynamic Points
-            const videoPts = videosCount * 10;
+            // Calculate Dynamic Points (Scaled to +100/+50)
+            const videoPts = videosCount * 100;
             const quizPts = quizzesData.data?.reduce((sum, q) => sum + (q.grade || 0), 0) || 0;
             const challengePts = challengesData.data?.reduce((sum, c) => {
-                const ch = c.challenges as any;
-                const pts = c.status === 'Completed' ? (ch?.points_completed || 10) : (ch?.points_tried || 5);
-                return sum + (c.status !== 'Not Completed' ? pts : 0);
+                const pts = c.status === 'Completed' ? 100 : c.status === 'Tried' ? 50 : 0;
+                return sum + pts;
             }, 0) || 0;
-            const attendancePts = attendanceCount * 10; // +10 per class
+
+            const attendancePts = (attendanceData.data || []).reduce((sum, a) => {
+                const pts = a.status === 'Present' ? 100 : a.status === 'Leave' ? 50 : 0;
+                return sum + pts;
+            }, 0);
 
             const calculatedTotalPoints = videoPts + quizPts + challengePts + attendancePts;
 

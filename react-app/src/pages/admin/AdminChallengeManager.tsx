@@ -214,8 +214,8 @@ export const AdminChallengeManager: React.FC = () => {
                                         {createMutation.isPending ? 'Creating...' : 'Forge Challenge'}
                                     </button>
                                     <div className="text-[10px] text-slate-500 text-center sm:text-left">
-                                        Points: <span className="font-bold text-emerald-600">✓ +10</span>,{' '}
-                                        <span className="font-bold text-amber-600">~ +5</span>,{' '}
+                                        Points: <span className="font-bold text-emerald-600">✓ +100</span>,{' '}
+                                        <span className="font-bold text-amber-600">~ +50</span>,{' '}
                                         <span className="font-bold text-slate-400">✗ 0</span>
                                     </div>
                                 </div>
@@ -260,9 +260,9 @@ export const AdminChallengeManager: React.FC = () => {
                                                         <p className="text-xs md:text-sm text-slate-600 line-clamp-2 md:line-clamp-none">{challenge.description}</p>
                                                     )}
                                                     <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-3 text-[9px] md:text-xs">
-                                                        <span className="text-emerald-600 font-bold">✓ +{challenge.points_completed}</span>
-                                                        <span className="text-amber-600 font-bold">~ +{challenge.points_tried}</span>
-                                                        <span className="text-slate-400 font-bold">✗ {challenge.points_not_completed}</span>
+                                                        <span className="text-emerald-600 font-bold">✓ +100</span>
+                                                        <span className="text-amber-600 font-bold">~ +50</span>
+                                                        <span className="text-slate-400 font-bold">✗ 0</span>
                                                     </div>
                                                 </div>
                                                 <div className="shrink-0">
