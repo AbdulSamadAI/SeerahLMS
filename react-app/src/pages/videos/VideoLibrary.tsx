@@ -74,9 +74,9 @@ export const VideoLibrary: React.FC = () => {
             // Calculate points based on percentage
             let pointsToAward = 0;
             if (percentage >= 100) {
-                pointsToAward = 10;
+                pointsToAward = 100;
             } else if (percentage >= 50) {
-                pointsToAward = 5;
+                pointsToAward = 50;
             }
 
             // Save progress
@@ -386,7 +386,7 @@ export const VideoLibrary: React.FC = () => {
                                                     </div>
                                                 </div>
                                                 <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                                                    You have successfully completed this lesson. 10 points have been added to your profile.
+                                                    You have successfully completed this lesson. 100 points have been added to your profile.
                                                 </p>
                                             </div>
                                         </div>

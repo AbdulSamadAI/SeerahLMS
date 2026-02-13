@@ -189,7 +189,7 @@ const StudentChallengeViewContent: React.FC = () => {
                                                                 response.status === 'Tried' ? 'bg-amber-100 text-amber-700' :
                                                                     'bg-slate-200 text-slate-600'
                                                                 }`}>
-                                                                {response.status} · +{response.points_awarded}pts
+                                                                {response.status} · +{response.status === 'Completed' ? 100 : response.status === 'Tried' ? 50 : 0}pts
                                                             </span>
                                                         )}
                                                     </div>
@@ -198,9 +198,9 @@ const StudentChallengeViewContent: React.FC = () => {
                                                         <p className="text-sm text-slate-600 mb-3">{challenge.description}</p>
                                                     )}
                                                     <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs font-bold uppercase tracking-wider">
-                                                        <span className="text-emerald-600">✓ Completed: +{challenge.points_completed}pts</span>
-                                                        <span className="text-amber-600">~ Tried: +{challenge.points_tried}pts</span>
-                                                        <span className="text-slate-400">✗ Not Completed: {challenge.points_not_completed}pts</span>
+                                                        <span className="text-emerald-600">✓ Completed: +100pts</span>
+                                                        <span className="text-amber-600">~ Tried: +50pts</span>
+                                                        <span className="text-slate-400">✗ Not Completed: 0pts</span>
                                                     </div>
                                                 </div>
 
