@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Core Palette: Prophetic Mastery v2.0 */
-  --primary: #7C3AED;
-  --primary-hover: #6D28D9;
-  --primary-soft: #EDE9FE;
+  /* Core Palette: Professional EdTech */
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-soft: #e0e7ff;
 
   --accent: #F59E0B;
   --accent-soft: #FEF3C7;

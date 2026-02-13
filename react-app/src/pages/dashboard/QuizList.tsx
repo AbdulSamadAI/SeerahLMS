@@ -6,28 +6,33 @@ import {
     Award
 } from 'lucide-react';
 import { useAuth } from '../../components/auth/AuthContext';
+import { useActiveClass } from '../../hooks/useActiveClass';
 import { motion } from 'framer-motion';
 
 interface ManualGrade {
     id: number;
     user_id: string;
     quiz_number: number;
+    class_number: number;
     grade: number;
+    total_points: number;
     feedback: string | null;
     created_at: string;
 }
 
 export const QuizList: React.FC = () => {
     const { user } = useAuth();
+    const { activeClass } = useActiveClass();
 
     const { data: manualGrades, isLoading } = useQuery({
-        queryKey: ['my-manual-grades', user?.id],
+        queryKey: ['my-manual-grades', user?.id, activeClass],
         enabled: !!user,
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('manual_quiz_grades')
                 .select('*')
                 .eq('user_id', user?.id)
+                .eq('class_number', activeClass)
                 .order('quiz_number', { ascending: true });
 
             if (error) {
@@ -97,7 +102,7 @@ export const QuizList: React.FC = () => {
                                             Quiz {grade.quiz_number || 1}
                                         </h4>
                                         <div className="text-4xl font-black text-primary-600 mb-3">
-                                            {grade.grade} <span className="text-lg text-slate-400">Points</span>
+                                            {grade.grade} <span className="text-lg text-slate-400">/ {grade.total_points || 10}</span>
                                         </div>
 
                                         <p className="text-slate-500 font-medium text-sm">

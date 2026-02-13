@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../components/auth/AuthContext';
+import { useActiveClass } from '../../hooks/useActiveClass';
 import {
     Calendar,
     CheckCircle2,
@@ -24,16 +25,17 @@ interface AttendanceRecord {
 
 export const StudentAttendanceView: React.FC = () => {
     const { user } = useAuth();
+    const { activeClass } = useActiveClass();
 
     const { data: records, isLoading } = useQuery({
-        queryKey: ['student-attendance', user?.id],
+        queryKey: ['student-attendance', user?.id, activeClass],
         enabled: !!user,
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('attendance_records')
                 .select('*')
                 .eq('user_id', user?.id)
-                .order('class_number', { ascending: false })
+                .eq('class_number', activeClass)
                 .order('session_number', { ascending: false });
 
             if (error) throw error;
